@@ -13,8 +13,9 @@ from utils.data_utils import apply_sliding_window
 class InertialDataset(Dataset):
     def __init__(self, data, window_size, window_overlap, model='deepconvlstm'):
         self.ids, self.features, self.labels = apply_sliding_window(data, window_size, window_overlap)
+        self.features = self.features[:, :, 1:]
         self.classes = len(np.unique(self.labels))
-        self.channels = self.features.shape[2] - 1
+        self.channels = self.features.shape[2]
         self.window_size = window_size
         self.model = model
 
@@ -27,7 +28,7 @@ class InertialDataset(Dataset):
             target = torch.LongTensor([int(self.labels[idx])])
             return data, target
         else:
-            return self.features[idx, :, 1:].astype(np.float32), self.labels[idx].astype(np.uint8)
+            return self.features[idx, :, :].astype(np.float32), self.labels[idx].astype(np.uint8)
 
 
 def init_weights(network, weight_init):

@@ -17,7 +17,7 @@ class DeepConvLSTM(nn.Module):
         self.conv2 = nn.Conv2d(conv_kernels, conv_kernels, (conv_kernel_size, 1))
         self.conv3 = nn.Conv2d(conv_kernels, conv_kernels, (conv_kernel_size, 1))
         self.conv4 = nn.Conv2d(conv_kernels, conv_kernels, (conv_kernel_size, 1))
-        self.lstm = nn.LSTM(channels * conv_kernels, lstm_units, num_layers=lstm_layers)
+        self.lstm = nn.LSTM(channels * conv_kernels, lstm_units, num_layers=lstm_layers, batch_first=True)
         self.dropout = nn.Dropout(dropout)
         self.classifier = nn.Linear(lstm_units, classes)
         self.activation = nn.ReLU()
@@ -28,7 +28,6 @@ class DeepConvLSTM(nn.Module):
 
     def forward(self, x):
         x = x.unsqueeze(1)
-
         x = self.activation(self.conv1(x))
         x = self.activation(self.conv2(x))
         x = self.activation(self.conv3(x))
@@ -39,12 +38,9 @@ class DeepConvLSTM(nn.Module):
 
         x = x.reshape(x.shape[0], x.shape[1], -1)
         x, h = self.lstm(x)
-        x = x.view(-1, self.lstm_units)
+        x = x[:,-1,:]
         if self.feature_extract == 'lstm':
             return x
         x = self.dropout(x)
         x = self.classifier(x)
-
-        out = x.view(-1, self.final_seq_len, self.classes)
-
-        return out[:, -1, :]
+        return x

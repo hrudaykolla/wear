@@ -154,7 +154,7 @@ def run_inertial_network(train_sbjs, val_sbjs, cfg, ckpt_folder, ckpt_freq, resu
             for tiou, tiou_mAP in zip(cfg['dataset']['tiou_thresholds'], v_mAP):
                 run[split_name].append({'mAP@' + str(tiou): tiou_mAP}, step=epoch)    
 
-    return t_losses, v_losses, v_mAP, v_preds, v_gt
+    return t_losses, v_losses, v_mAP, v_preds, v_gt, net
 
 
 def train_one_epoch(loader, network, opt, criterion, gpu=None):
@@ -206,3 +206,59 @@ def validate_one_epoch(loader, network, criterion, gpu=None):
             gt = np.concatenate((gt, batch_gt))
     return losses, preds, gt
 
+def run_inertial_network_for_features(net,train_sbjs, val_sbjs,itr, cfg, gpu = None):
+    for t_sbj in train_sbjs:
+        t_data = pd.read_csv(os.path.join(cfg['dataset']['sens_folder'], t_sbj + '.csv'), index_col=False).replace({"label": cfg['label_dict']}).fillna(0).to_numpy()
+         # define inertial datasets
+        train_dataset = InertialDataset(t_data, cfg['dataset']['window_size'], cfg['dataset']['window_overlap'])
+        train_loader = DataLoader(train_dataset, len(train_dataset), shuffle=False, num_workers=4, worker_init_fn=worker_init_reset_seed, persistent_workers=True)
+        net.to(cfg['devices'][0])
+        net.eval()
+        with torch.no_grad():
+        # iterate over validation dataset
+            for i, (inputs, targets) in enumerate(train_loader):
+                # send x and y to GPU
+                if gpu is not None:
+                    inputs, targets = inputs.to(gpu), targets.to(gpu)
+
+                # send inputs through network to get predictions, loss and calculate softmax probabilities
+                features = net(inputs)
+        # Convert the features to a numpy
+        features_np = features.cpu().detach().numpy()  # Assuming lstm_features is a PyTorch tensor
+        if net.feature_extract == 'conv':
+            destination_folder = os.path.join(cfg['dataset']['conv_feat_folder'],'wear_split_' + str(itr+1))
+        elif net.feature_extract == 'lstm':
+            destination_folder = os.path.join(cfg['dataset']['lstm_feat_folder'],'wear_split_' + str(itr+1))
+        # Ensure the destination folder exists, if not, create it
+        os.makedirs(destination_folder, exist_ok=True)
+        
+        filename = os.path.join(destination_folder, t_sbj + '.npy')
+        np.save(filename, features_np)
+
+    for t_sbj in val_sbjs:
+        t_data = pd.read_csv(os.path.join(cfg['dataset']['sens_folder'], t_sbj + '.csv'), index_col=False).replace({"label": cfg['label_dict']}).fillna(0).to_numpy()
+         # define inertial datasets
+        train_dataset = InertialDataset(t_data, cfg['dataset']['window_size'], cfg['dataset']['window_overlap'])
+        train_loader = DataLoader(train_dataset, len(train_dataset), shuffle=False, num_workers=4, worker_init_fn=worker_init_reset_seed, persistent_workers=True)
+        net.to(cfg['devices'][0])
+        net.eval()
+        with torch.no_grad():
+        # iterate over validation dataset
+            for i, (inputs, targets) in enumerate(train_loader):
+                # send x and y to GPU
+                if gpu is not None:
+                    inputs, targets = inputs.to(gpu), targets.to(gpu)
+
+                # send inputs through network to get predictions, loss and calculate softmax probabilities
+                features = net(inputs)
+        # Convert the LSTM features to a numpy
+        features_np = features.cpu().detach().numpy()  # Assuming lstm_features is a PyTorch tensor
+        if net.feature_extract == 'conv':
+            destination_folder = os.path.join(cfg['dataset']['conv_feat_folder'],'wear_split_' + str(itr+1))
+        elif net.feature_extract == 'lstm':
+            destination_folder = os.path.join(cfg['dataset']['lstm_feat_folder'],'wear_split_' + str(itr+1))
+        # Ensure the destination folder exists, if not, create it
+        os.makedirs(destination_folder, exist_ok=True)
+        
+        filename = os.path.join(destination_folder, t_sbj + '.npy')
+        np.save(filename, features_np)

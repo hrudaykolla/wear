@@ -20,20 +20,21 @@ import neptune
 from neptune.types import File
 from sklearn.metrics import precision_score, recall_score, f1_score, confusion_matrix, ConfusionMatrixDisplay
 
-from inertial_baseline.train import run_inertial_network
+from inertial_baseline.train import run_inertial_network, run_inertial_network_for_features
 from utils.torch_utils import fix_random_seed
 from utils.os_utils import Logger, load_config
 import matplotlib.pyplot as plt
 from camera_baseline.actionformer.main import run_actionformer
 from camera_baseline.tridet.main import run_tridet
+import torch
 
 
 def main(args):
     if args.neptune:
         run = neptune.init_run(
-        project="",
-        api_token=""
-        )
+                project="hrudaykolla/wear",
+                api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiIyNTdjMGM1NS0xOTk5LTQ4YTUtODlmOS1jMzVjZTQ1M2YyNjQifQ==",
+            )  # your credentials
     else:
         run = None
 
@@ -60,7 +61,8 @@ def main(args):
     all_v_pred = np.array([])
     all_v_gt = np.array([])
     all_v_mAP = np.empty((0, len(config['dataset']['tiou_thresholds'])))
-        
+    if config['name'] == 'tridet':
+        config['main_feat_folder'] = config['dataset']['feat_folder']
     for i, anno_split in enumerate(config['anno_json']):
         with open(anno_split) as f:
             file = json.load(f)
@@ -80,12 +82,26 @@ def main(args):
             config['dataset']['json_info'] = config['info_json'][i]
 
         if config['name'] == 'deepconvlstm' or config['name'] == 'attendanddiscriminate':
-            t_losses, v_losses, v_mAP, v_preds, v_gt = run_inertial_network(train_sbjs, val_sbjs, config, log_dir, args.ckpt_freq, args.resume, rng_generator, run)
+            t_losses, v_losses, v_mAP, v_preds, v_gt, net = run_inertial_network(train_sbjs, val_sbjs, config, log_dir, args.ckpt_freq, args.resume, rng_generator, run)
+            # extract processed features from net_1 to processed features folder for all the subjects
+            if config['save_conv_features_during_training'] == True:
+                print('Saving conv features initiated')
+                net.feature_extract = 'conv'
+                run_inertial_network_for_features(net,train_sbjs, val_sbjs,i, config, config['devices'][0])
+                net.feature_extract = None
+            if config['save_lstm_features_during_training'] == True:
+                print('Saving lstm features initiated')
+                net.feature_extract = 'lstm'
+                run_inertial_network_for_features(net,train_sbjs, val_sbjs, i, config, config['devices'][0])
+                net.feature_extract = None
         elif config['name'] == 'actionformer':
             t_losses, v_losses, v_mAP, v_preds, v_gt = run_actionformer(val_sbjs, config, log_dir, args.ckpt_freq, args.resume, rng_generator, run)
         elif config['name'] == 'tridet':
+            if config['trained_on_inertial_extracted_features'] == True:
+                config['dataset']['feat_folder'] = config['main_feat_folder'] + 'wear_split_' + str(i+1) + '/'
+                print(config['dataset']['feat_folder'])
             t_losses, v_losses, v_mAP, v_preds, v_gt = run_tridet(val_sbjs, config, log_dir, args.ckpt_freq, args.resume, rng_generator, run)
-        
+
         # raw results
         conf_mat = confusion_matrix(v_gt, v_preds, normalize='true', labels=range(len(config['labels'])))
         v_acc = conf_mat.diagonal()/conf_mat.sum(axis=1)

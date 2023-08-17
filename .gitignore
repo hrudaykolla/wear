@@ -5,7 +5,10 @@ data
 libs/utils/dist
 libs/utils/nms_1d_cpu.egg-info
 **/build
-
+*.out
+.vscode
+*.sbatch
+results
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

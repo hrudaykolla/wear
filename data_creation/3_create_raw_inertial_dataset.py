@@ -11,7 +11,6 @@ from utils import append_srt_to_dataframe
 sbjs = ['sbj_0', 'sbj_1', 'sbj_2', 'sbj_3', 'sbj_4', 'sbj_5', 'sbj_6', 'sbj_7', 'sbj_8', 'sbj_9', 'sbj_10', 'sbj_11', 'sbj_12', 'sbj_13', 'sbj_14', 'sbj_15', 'sbj_16', 'sbj_17']
 sens_header = ['sbj_id', 'right_arm_acc_x', 'right_arm_acc_y', 'right_arm_acc_z', 'right_leg_acc_x', 'right_leg_acc_y','right_leg_acc_z', 'left_leg_acc_x', 'left_leg_acc_y', 'left_leg_acc_z', 'left_arm_acc_x', 'left_arm_acc_y', 'left_arm_acc_z', 'label']
 
-    
 for i, subject in enumerate(sbjs):
     print('PROCESSING: {}'.format(subject))
     sbj_sens_files = sorted(glob(os.path.join(os.path.join('data_creation/recordings', subject + '_*', subject + '_*'))))
