@@ -186,7 +186,7 @@ def make_scheduler(
             scheduler = optim.lr_scheduler.MultiStepLR(
                 optimizer,
                 steps,
-                gamma=schedule_config["gamma"],
+                gamma= optimizer_config["gamma"],
                 last_epoch=last_epoch
             )
         else:
@@ -309,12 +309,12 @@ def valid_one_epoch(val_loader, model):
         'label': [],
         'score': []
     }
-    
+    losses_tracker = {}
     # loop over validation set
     for _, video_list in enumerate(val_loader, 0):
         # forward the model (wo. grad)
         with torch.no_grad():
-            output = model(video_list)
+            losses, output = model(video_list)
             # upack the results into ANet format
             num_vids = len(output)
             for vid_idx in range(num_vids):
@@ -327,6 +327,13 @@ def valid_one_epoch(val_loader, model):
                     results['t-end'].append(output[vid_idx]['segments'][:, 1])
                     results['label'].append(output[vid_idx]['labels'])
                     results['score'].append(output[vid_idx]['scores'])
+            # track all losses
+            for key, value in losses.items():
+                # init meter if necessary
+                if key not in losses_tracker:
+                    losses_tracker[key] = AverageMeter()
+                # update
+                losses_tracker[key].update(value.item())
 
     # gather all stats and evaluate
     results['t-start'] = torch.cat(results['t-start']).numpy()
@@ -334,4 +341,4 @@ def valid_one_epoch(val_loader, model):
     results['label'] = torch.cat(results['label']).numpy()
     results['score'] = torch.cat(results['score']).numpy()
 
-    return 0.0, results
+    return losses_tracker['final_loss'].avg, results
