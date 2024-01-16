@@ -1,0 +1,39 @@
+#Check Table 18 in Report for abbrevations
+
+#For Saving OALF features from Deep Conv LSTM Network
+python main.py --config ./configs/60_frames_30_stride/deepconvlstm_long_opportunity.yaml --seed 1 --neptune True
+
+#For Saving OANLF features from Deep Conv LSTM Network
+python main.py --config ./configs/60_frames_30_stride/deepconvlstm_long_norm_opportunity.yaml --seed 1 --neptune True
+
+#OAIF
+    #ActionFormer
+python main.py --config ./configs/60_frames_30_stride/actionformer_inertial_opportunity.yaml --seed 1 --neptune True
+python main.py --config ./configs/60_frames_30_stride/actionformer_inertial_opportunity.yaml --seed 2 --neptune True
+    #Tridet
+python main.py --config ./configs/60_frames_30_stride/tridet_inertial_opportunity.yaml --seed 1 --neptune True
+python main.py --config ./configs/60_frames_30_stride/tridet_inertial_opportunity.yaml --seed 2 --neptune True
+
+#OANIF
+    #ActionFormer 
+python main.py --config ./configs/60_frames_30_stride/actionformer_inertial_norm_opportunity.yaml --seed 1 --neptune True
+python main.py --config ./configs/60_frames_30_stride/actionformer_inertial_norm_opportunity.yaml --seed 2 --neptune True
+    #Tridet
+python main.py --config ./configs/60_frames_30_stride/tridet_inertial_norm_opportunity.yaml --seed 1 --neptune True
+python main.py --config ./configs/60_frames_30_stride/tridet_inertial_norm_opportunity.yaml --seed 2 --neptune True
+
+#OALF
+    #ActionFormer
+python main.py --config ./configs/60_frames_30_stride/actionformer_inertial_lstm_opportunity.yaml --seed 1 --neptune True
+python main.py --config ./configs/60_frames_30_stride/actionformer_inertial_lstm_opportunity.yaml --seed 2 --neptune True
+    #Tridet
+python main.py --config ./configs/60_frames_30_stride/tridet_inertial_lstm_opportunity.yaml --seed 1 --neptune True
+python main.py --config ./configs/60_frames_30_stride/tridet_inertial_lstm_opportunity.yaml --seed 2 --neptune True
+
+#OANLF
+    #ActionFormer
+python main.py --config ./configs/60_frames_30_stride/actionformer_inertial_norm_lstm_opportunity.yaml --seed 1 --neptune True
+python main.py --config ./configs/60_frames_30_stride/actionformer_inertial_norm_lstm_opportunity.yaml --seed 2 --neptune True
+    #Tridet
+python main.py --config ./configs/60_frames_30_stride/tridet_inertial_norm_lstm_opportunity.yaml --seed 1 --neptune True
+python main.py --config ./configs/60_frames_30_stride/tridet_inertial_norm_lstm_opportunity.yaml --seed 2 --neptune True

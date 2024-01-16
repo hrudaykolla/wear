@@ -2,29 +2,31 @@ name: deepconvlstm
 dataset_name: wear
 devices: ['cuda:0']
 save_conv_features_during_training: False
-save_lstm_features_during_training: False
+save_lstm_features_during_training: True
 anno_json: [
   'data/wear/annotations/wear_split_1.json',
   'data/wear/annotations/wear_split_2.json',
   'data/wear/annotations/wear_split_3.json'
 ]
 dataset: {
-  sens_folder: ./data/wear/raw/inertial,
+  sens_folder: ./data/wear/raw_clipped_scaled/inertial,
+  lstm_feat_folder: ./data/wear/raw_clipped_scaled_lstm_processed/inertial_features/60_frames_30_stride,
   input_dim: 12,
   sampling_rate: 50,
-  window_size: 25,
+  num_classes: 18,
+  window_size: 50,
   window_overlap: 50,
   tiou_thresholds: [0.3, 0.4, 0.5, 0.6, 0.7]
 }
 model: {
   conv_kernels: 64,
-  conv_kernel_size: 5,
+  conv_kernel_size: 11,
   lstm_units: 1024,
   lstm_layers: 1,
   dropout: 0.5
 }
 train_cfg: {
-  lr: 0.0001,
+  lr:  0.0000015,
   lr_decay: 0.9,
   lr_step: 10,
   epochs: 300,

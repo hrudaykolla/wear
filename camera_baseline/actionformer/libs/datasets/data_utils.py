@@ -51,8 +51,8 @@ def truncate_feats(
     data_dict = copy.deepcopy(data_dict)
 
     # try a few times till a valid truncation with at least one action
-    for _ in range(max_num_trials):
-
+    for _ in range(300):
+        # max_num_trials
         # sample a random truncation of the video feats
         st = random.randint(0, feat_len - max_seq_len)
         ed = st + max_seq_len
@@ -60,8 +60,10 @@ def truncate_feats(
 
         # compute the intersection between the sampled window and all segments
         window = window[None].repeat(num_segs, 1)
-        left = torch.maximum(window[:, 0] - offset, data_dict['segments'][:, 0])
-        right = torch.minimum(window[:, 1] + offset, data_dict['segments'][:, 1])
+        left = torch.maximum(window[:, 0] - offset,
+                             data_dict['segments'][:, 0])
+        right = torch.minimum(
+            window[:, 1] + offset, data_dict['segments'][:, 1])
         inter = (right - left).clamp(min=0)
         area_segs = torch.abs(
             data_dict['segments'][:, 1] - data_dict['segments'][:, 0])

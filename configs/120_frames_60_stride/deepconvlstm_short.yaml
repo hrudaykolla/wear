@@ -1,7 +1,8 @@
 name: deepconvlstm
 dataset_name: wear
 devices: ['cuda:0']
-save_features_during_training: False
+save_conv_features_during_training: False
+save_lstm_features_during_training: False
 anno_json: [
   'data/wear/annotations/wear_split_1.json',
   'data/wear/annotations/wear_split_2.json',

@@ -1,7 +1,8 @@
 name: deepconvlstm
 dataset_name: wear
 devices: ['cuda:0']
-save_features_during_training: False
+save_conv_features_during_training: False
+save_lstm_features_during_training: False
 anno_json: [
   'data/wear/annotations/wear_split_1.json',
   'data/wear/annotations/wear_split_2.json',
@@ -24,10 +25,10 @@ model: {
   dropout: 0.5
 }
 train_cfg: {
-  lr: 0.0001,
+  lr:  0.000002,
   lr_decay: 0.9,
   lr_step: 0,
-  epochs: 30,
+  epochs: 100,
   weight_decay: 0.000001,
   weight_init: 'xavier_normal',
   weighted_loss: True,

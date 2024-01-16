@@ -12,6 +12,7 @@ def trivial_batch_collator(batch):
     """
     return batch
 
+
 def worker_init_reset_seed(worker_id):
     """
         Reset random seed for each worker
@@ -20,6 +21,7 @@ def worker_init_reset_seed(worker_id):
     np.random.seed(seed)
     random.seed(seed)
     os.environ["PYTHONHASHSEED"] = str(seed)
+
 
 def truncate_feats(
     data_dict,
@@ -63,10 +65,9 @@ def truncate_feats(
 
     # otherwise, deep copy the dict
     data_dict = copy.deepcopy(data_dict)
-
     # try a few times till a valid truncation with at least one action
-    for _ in range(max_num_trials):
-
+    for _ in range(300):
+        # max_num_trials
         # sample a random truncation of the video feats
         st = random.randint(0, feat_len - max_seq_len)
         ed = st + max_seq_len

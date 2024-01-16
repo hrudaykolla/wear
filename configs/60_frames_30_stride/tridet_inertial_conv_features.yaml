@@ -10,7 +10,7 @@ anno_json: [
   'data/wear/annotations/wear_split_3.json'
 ]
 dataset: {
-  feat_folder: ./data/wear/conv_processed_old/inertial_features/60_frames_30_stride/,
+  feat_folder: ./data/wear/conv_processed/inertial_features/60_frames_30_stride/,
   sens_folder: ./data/wear/raw/inertial,
   sampling_rate: 50,
   file_prefix: ~,

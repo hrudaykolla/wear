@@ -1,0 +1,83 @@
+#Check Table 17 in Report for abbrevations
+
+#For Saving WLF and WCF features from Deep Conv LSTM Network
+python main.py --config ./configs/60_frames_30_stride/deepconvlstm_long_save_features.yaml --seed 1 --neptune True
+
+#For Saving WNLF features from Deep Conv LSTM Network
+python main.py --config ./configs/60_frames_30_stride/deepconvlstm_long_raw_clipped_scaled.yaml --seed 1 --neptune True
+
+#WIF
+    #ActionFormer
+python main.py --config ./configs/60_frames_30_stride/actionformer_inertial.yaml --seed 1 --neptune True
+python main.py --config ./configs/60_frames_30_stride/actionformer_inertial.yaml --seed 2 --neptune True
+    #Tridet
+python main.py --config ./configs/60_frames_30_stride/tridet_inertial.yaml --seed 1 --neptune True
+python main.py --config ./configs/60_frames_30_stride/tridet_inertial.yaml --seed 2 --neptune True
+
+#WNIF
+    #ActionFormer
+python main.py --config ./configs/60_frames_30_stride/actionformer_inertial_Norm.yaml --seed 1 --neptune True
+python main.py --config ./configs/60_frames_30_stride/actionformer_inertial_Norm.yaml --seed 2 --neptune True
+    #Tridet
+python main.py --config ./configs/60_frames_30_stride/tridet_inertial_Norm.yaml --seed 1 --neptune True
+python main.py --config ./configs/60_frames_30_stride/tridet_inertial_Norm.yaml --seed 2 --neptune True
+
+#WLF
+    #ActionFormer
+python main.py --config ./configs/60_frames_30_stride/actionformer_inertial_lstm_features.yaml --seed 1 --neptune True
+python main.py --config ./configs/60_frames_30_stride/actionformer_inertial_lstm_features.yaml --seed 2 --neptune True
+    #Tridet
+python main.py --config ./configs/60_frames_30_stride/tridet_inertial_lstm_features.yaml --seed 1 --neptune True
+python main.py --config ./configs/60_frames_30_stride/tridet_inertial_lstm_features.yaml --seed 2 --neptune True
+
+#WNLF
+    #ActionFormer
+python main.py --config ./configs/60_frames_30_stride/actionformer_inertial_Norm_lstm.yaml --seed 1 --neptune True
+python main.py --config ./configs/60_frames_30_stride/actionformer_inertial_Norm_lstm.yaml --seed 2 --neptune True
+    #Tridet
+python main.py --config ./configs/60_frames_30_stride/tridet_raw_inertial_clipped_scaled_lstm_features.yaml --seed 1 --neptune True
+python main.py --config ./configs/60_frames_30_stride/tridet_raw_inertial_clipped_scaled_lstm_features.yaml --seed 2 --neptune True
+    
+#WCF
+    #ActionFormer
+python main.py --config ./configs/60_frames_30_stride/actionformer_inertial_conv_features.yaml --seed 1 --neptune True
+    #Tridet
+python main.py --config ./configs/60_frames_30_stride/tridet_inertial_conv_features.yaml --seed 1 --neptune True
+
+#WIF+I3D
+    #ActionFormer
+python main.py --config ./configs/60_frames_30_stride/actionformer_combined.yaml --seed 1 --neptune True
+python main.py --config ./configs/60_frames_30_stride/actionformer_combined.yaml --seed 2 --neptune True
+    #Tridet
+python main.py --config ./configs/60_frames_30_stride/tridet_combined.yaml --seed 1 --neptune True
+python main.py --config ./configs/60_frames_30_stride/tridet_combined.yaml --seed 2 --neptune True
+    
+#WNIF+I3D
+    #ActionFormer
+python main.py --config ./configs/60_frames_30_stride/actionformer_combined_raw_inertial_norm --seed 1 --neptune True
+python main.py --config ./configs/60_frames_30_stride/actionformer_combined_raw_inertial_norm --seed 2 --neptune True
+    #Tridet
+python main.py --config ./configs/60_frames_30_stride/tridet_raw_inertial_clip_scale_lstm_plus_i3d_combined --seed 1 --neptune True
+python main.py --config ./configs/60_frames_30_stride/tridet_raw_inertial_clip_scale_lstm_plus_i3d_combined --seed 2 --neptune True
+
+#WLF+I3D
+    #ActionFormer
+python main.py --config ./configs/60_frames_30_stride/actionformer_combined_lstm.yaml --seed 1 --neptune True
+python main.py --config ./configs/60_frames_30_stride/actionformer_combined_lstm.yaml --seed 2 --neptune True
+    #Tridet
+python main.py --config ./configs/60_frames_30_stride/tridet_lstm_inertial_plus_i3d_combined.yaml --seed 1 --neptune True
+python main.py --config ./configs/60_frames_30_stride/tridet_lstm_inertial_plus_i3d_combined.yaml --seed 2 --neptune True
+
+#WNLF+I3D
+    #ActionFormer
+python main.py --config ./configs/60_frames_30_stride/actionformer_combined_raw_inertial_norm_lstm_processed.yaml --seed 1 --neptune True
+python main.py --config ./configs/60_frames_30_stride/actionformer_combined_raw_inertial_norm_lstm_processed.yaml --seed 2 --neptune True
+    #Tridet
+python main.py --config ./configs/60_frames_30_stride/tridet_combined_raw_inertial_norm.yaml --seed 1 --neptune True
+python main.py --config ./configs/60_frames_30_stride/tridet_combined_raw_inertial_norm.yaml --seed 2 --neptune True
+
+#WCF+I3D
+    #ActionFormer
+python main.py --config ./configs/60_frames_30_stride/actionformer_combined_conv.yaml --seed 1 --neptune True
+    #Tridet
+python main.py --config ./configs/60_frames_30_stride/tridet_conv_inertial_plus_i3d_combined.yaml --seed 1 --neptune True

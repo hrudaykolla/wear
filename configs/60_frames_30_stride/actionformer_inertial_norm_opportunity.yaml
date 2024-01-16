@@ -1,24 +1,24 @@
 name: actionformer
-dataset_name: wear
+dataset_name: opportunity
 train_split: ['training']
 val_split: ['validation']
 devices: ['cuda:0']
 trained_on_inertial_extracted_features: Fasle
 anno_json: [
-  'data/wear/annotations/wear_split_1.json',
-  'data/wear/annotations/wear_split_2.json',
-  'data/wear/annotations/wear_split_3.json'
+  'data/opportunity_adl_data/annotations/opportunity_split_1.json',
+  'data/opportunity_adl_data/annotations/opportunity_split_2.json',
+  'data/opportunity_adl_data/annotations/opportunity_split_3.json'
 ]
 dataset: {
-  feat_folder: ./data/wear/processed/combined_features/60_frames_30_stride,
-  sens_folder: ./data/wear/raw/inertial,
-  sampling_rate: 50,
+  feat_folder: ./data/opportunity_adl_data/concatenated_norm_data/inertial_features/60_frames_30_stride,
+  sens_folder: ./data/opportunity_adl_data/raw_clipped_scaled,
+  sampling_rate: 30,
   file_prefix: ~,
   file_ext: .npy,
   feat_stride: 30,
   num_frames: 60,
-  input_dim: 2648,
-  num_classes: 18,
+  input_dim: 3390,
+  num_classes: 17,
   downsample_rate: 1,
   max_seq_len: 2304,
   trunc_thresh: 0.3,
@@ -46,7 +46,7 @@ model: {
   head_kernel_size: 3,
   head_num_layers: 3,
   head_with_ln: True,
-  max_buffer_len_factor: 4.0,
+  max_buffer_len_factor: 8.0,
   use_abs_pe: False,
   use_rel_pe: False,
 }
