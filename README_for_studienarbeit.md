@@ -11,23 +11,27 @@ Follow README.md file for the installation and reproduction of experiments.
 ## Reproducing Experiments of Studienarbeit
 The experiments of studienarbeit are done on WEAR and Opportunity ADL datasets on 1 Second windows. Below are the folder strucutures for running the experiments.
 
-# Data folder structure for Opportunity WEAR data
+# Data folder structure for WEAR data
 <img src="./folder_structure_images/wear.png" width="100%"/>
 
-Get the raw data, processed data and annotations from the link given in README.md
-Using the ./raw_wear_normalization/data_norm.ipynb file obtain raw_clipped_scaled inertial features.
-Using the ./raw_wear_normalization/4_create_features_and_annotations.py obtain processed raw clipped scaled inertial features.
-Using the above data, corresponding LSTM features and Convolutional features are saved in the folders when the config files are run.
+## Follow the below instructions to obtain the above structure
+* Get the raw data, processed data and annotations from the link given in README.md
+* Using the ./raw_wear_normalization/data_norm.ipynb file obtain raw_clipped_scaled inertial features.
+* Using the ./raw_wear_normalization/4_create_features_and_annotations.py obtain processed raw clipped scaled inertial features.
+* Using the above data, corresponding LSTM features and Convolutional features are saved in the folders when the config files are run.
+* Use Job Scripts in ./Job_scripts_studienarbeit/wear for reproducing experiments.
 
-# Data folder structure for Opportunity ADL data
+## Data folder structure for Opportunity ADL data
 <img src="./folder_structure_images/opportunity_adl.png" width="100%"/>
 
-Get the raw data from here(http://opportunity-project.eu/system/files/Challenge/OpportunityChallengeLabeled.zip), unzip to this folder.
-Using, ./opportunity_normalization/data_combining.ipynb, .dat files of each subject can be combined to one file and all four subject file is combined to one file for further analysis.
-Using ./opportunity_normalization/main.ipynb further analysis can be done and normalization files are obtained.
-Using the ./raw_wear_normalization/data_norm.ipynb file obtain raw_clipped_scaled inertial features.
-Using the ./raw_wear_normalization/4_create_features_and_annotations.py obtain processed raw clipped scaled inertial features.
-Using the above data, corresponding LSTM features and Convolutional features are saved in the folders when the config files are run.
+## Follow the below instructions to obtain the above structure
+* Get the raw data from here(http://opportunity-project.eu/system/files/Challenge/OpportunityChallengeLabeled.zip), unzip to this folder.
+* Using, ./opportunity_normalization/data_combining.ipynb, .dat files of each subject can be combined to one file and all four subject file is combined to one file for further analysis.
+* Using ./opportunity_normalization/main.ipynb further analysis can be done and normalization files are obtained.
+* Using the ./raw_wear_normalization/data_norm.ipynb file obtain raw_clipped_scaled inertial features.
+* Using the ./raw_wear_normalization/4_create_features_and_annotations.py obtain processed raw clipped scaled inertial features.
+* Using the above data, corresponding LSTM features and Convolutional features are saved in the folders when the config files are run.
+* Use Job Scripts in ./Job_scripts_studienarbeit/opportunity for reproducing experiments.
 
 
 Once having installed requirements, one can rerun experiments by running the `main.py` script:
